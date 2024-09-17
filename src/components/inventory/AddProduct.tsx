@@ -16,6 +16,9 @@ const AddProduct = () => {
     resolver: zodResolver(AddEditProductValidation),
     defaultValues: {
       productName: "",
+      productPrice: "" as unknown as number,
+      status: "Active",
+      stock: "" as unknown as number,
     },
   })
 

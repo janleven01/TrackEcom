@@ -3,7 +3,7 @@ import ProductDisplay from "./ProductDisplay"
 
 const Inventory = async ({ params }: { params: string }) => {
   const res = await fetch(
-    `${process.env.NEXTAUTH_URL}/api/inventory/${params}`,
+    `${process.env.NEXT_PUBLIC_VERCEL_URL}/api/inventory/${params}`,
     {
       cache: "no-store",
     }

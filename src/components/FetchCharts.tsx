@@ -2,9 +2,9 @@ import FetchBarCharts from "./FetchBarChart"
 import FetchStats from "./FetchStats"
 
 const FetchCharts = async ({ params }: { params: string }) => {
-  const res = await fetch(`${process.env.NEXTAUTH_URL}/charts/${params}`, {
-    cache: "no-store",
-  })
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_VERCEL_URL}/api/charts/${params}`
+  )
   if (!res.ok) {
     const errorMessage = await res.text()
     console.error("Fetch error:", errorMessage)

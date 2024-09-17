@@ -38,7 +38,7 @@ const ProductDisplay = ({
       try {
         await fetch(
           `${
-            process.env.NEXTAUTH_URL
+            process.env.NEXT_PUBLIC_VERCEL_URL
           }/api/inventory/${params}?productName=${encodeURIComponent(
             productName
           )}`,

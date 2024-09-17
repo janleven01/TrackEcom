@@ -23,8 +23,8 @@ type AddEditDialogProps = {
     {
       status: "Active" | "Draft" | "Archived"
       productName: string
-      productPrice: number
-      stock: number
+      productPrice: number | null
+      stock: number | null
     },
     any,
     undefined
