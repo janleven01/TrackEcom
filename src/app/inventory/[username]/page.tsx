@@ -1,8 +1,11 @@
 import Inventory from "@/components/inventory/Inventory"
 import Nav from "@/components/Nav"
+import InventorySkeleton from "@/components/skeleton/inventory-table"
+import { Skeleton } from "@/components/ui/skeleton"
 import { authOptions } from "@/utils/authOptions"
 import { getServerSession } from "next-auth"
 import { redirect } from "next/navigation"
+import { Suspense } from "react"
 
 const InventoryPage = async ({ params }: { params: { username: string } }) => {
   const session = await getServerSession(authOptions)
@@ -16,7 +19,11 @@ const InventoryPage = async ({ params }: { params: { username: string } }) => {
       <Nav />
       <section className="sm:px-6 sm:py-6 p-4 border-x border-b rounded-b-lg mb-2">
         <h1 className="text-3xl font-bold">Inventory</h1>
-        <Inventory params={params.username} />
+        <div className="flex border border-dashed rounded-lg h-[75vh] my-4">
+          <Suspense fallback={<InventorySkeleton />}>
+            <Inventory params={params.username} />
+          </Suspense>
+        </div>
       </section>
     </main>
   )

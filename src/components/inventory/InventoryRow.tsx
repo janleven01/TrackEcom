@@ -19,6 +19,8 @@ const InventoryRow = (props: InventoryProps) => {
     price,
     stock,
     createdAt,
+    isToggled,
+    handleToggle,
     handleDelete,
     handleEditToggle,
   } = props
@@ -38,7 +40,7 @@ const InventoryRow = (props: InventoryProps) => {
       <TableCell className="hidden md:table-cell">{stock}</TableCell>
       <TableCell className="hidden md:table-cell">{formattedDate}</TableCell>
       <TableCell>
-        <DropdownMenu>
+        <DropdownMenu onOpenChange={() => handleToggle(productName)}>
           <DropdownMenuTrigger asChild>
             <Button aria-haspopup="true" size="icon" variant="ghost">
               <MoreHorizontal className="h-4 w-4" />
@@ -47,9 +49,7 @@ const InventoryRow = (props: InventoryProps) => {
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem onClick={() => handleEditToggle(productName)}>
-              Edit
-            </DropdownMenuItem>
+            <DropdownMenuItem onClick={handleEditToggle}>Edit</DropdownMenuItem>
             <DropdownMenuItem onClick={() => handleDelete(productName)}>
               Delete
             </DropdownMenuItem>

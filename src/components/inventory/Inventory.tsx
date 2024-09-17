@@ -16,7 +16,7 @@ const Inventory = async ({ params }: { params: string }) => {
 
   const { inventory } = await res.json()
   return (
-    <div className="flex border border-dashed rounded-lg h-[75vh] my-4">
+    <>
       {inventory.length > 0 ? (
         <div className="w-full">
           <ProductDisplay inventory={inventory} params={params} />
@@ -27,7 +27,7 @@ const Inventory = async ({ params }: { params: string }) => {
           <AddProduct />
         </div>
       )}
-    </div>
+    </>
   )
 }
 
