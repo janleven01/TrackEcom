@@ -11,8 +11,13 @@ import {
 import AddProduct from "./AddProduct"
 import { InventoryProps } from "@/types"
 import InventoryRow from "./InventoryRow"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import EditProduct from "./EditProduct"
+import { useAuth } from "@/context/AuthContext"
+import { useForm } from "react-hook-form"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { AddEditProductValidation } from "@/lib/validation"
+import { z } from "zod"
 
 const ProductDisplay = ({
   inventory,
@@ -21,13 +26,51 @@ const ProductDisplay = ({
   inventory: InventoryProps[]
   params: string
 }) => {
+  const form = useForm<z.infer<typeof AddEditProductValidation>>({
+    resolver: zodResolver(AddEditProductValidation),
+    defaultValues: {
+      productName: "",
+      productPrice: 0,
+      status: "Active",
+      stock: 0,
+    },
+  })
+
+  const { session } = useAuth()
   const [isEditOpen, setIsEditOpen] = useState(false)
+  const [isToggled, setIsToggled] = useState<boolean>(false)
   const [selectedProduct, setSelectedProduct] = useState<string>("")
 
-  const handleEditToggle = (productName: string) => {
-    setSelectedProduct(productName)
+  const handleEditToggle = () => {
     setIsEditOpen((prev) => !prev)
   }
+
+  const handleToggle = (productName: string) => {
+    setSelectedProduct(productName)
+    setIsToggled((prev) => !prev)
+  }
+
+  useEffect(() => {
+    if (selectedProduct) {
+      // Fetch product data by its ID
+      const fetchProduct = async () => {
+        const res = await fetch(
+          `/api/inventory/${session?.user.name}/${encodeURIComponent(
+            selectedProduct
+          )}`
+        )
+        const product = await res.json()
+        // Used the reset method to populate the form with the fetched data
+        form.reset({
+          productName: product.productName,
+          status: product.status,
+          productPrice: product.price,
+          stock: product.stock,
+        })
+      }
+      fetchProduct()
+    }
+  }, [selectedProduct, form, session?.user.name])
 
   const handleDelete = async (productName: string) => {
     const hasConfirmed = confirm(
@@ -86,6 +129,8 @@ const ProductDisplay = ({
                   key={product.productName}
                   handleDelete={handleDelete}
                   handleEditToggle={handleEditToggle}
+                  handleToggle={handleToggle}
+                  isToggled={isToggled}
                 />
               ))}
             </TableBody>
@@ -106,6 +151,7 @@ const ProductDisplay = ({
           selectedProduct={selectedProduct}
           isEditOpen={isEditOpen}
           setIsEditOpen={setIsEditOpen}
+          form={form}
         />
       )}
     </>
