@@ -1,7 +1,6 @@
 import Inventory from "@/components/inventory/Inventory"
 import Nav from "@/components/Nav"
 import InventorySkeleton from "@/components/skeleton/inventory-table"
-import { Skeleton } from "@/components/ui/skeleton"
 import { authOptions } from "@/utils/authOptions"
 import { getServerSession } from "next-auth"
 import { redirect } from "next/navigation"

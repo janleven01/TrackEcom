@@ -16,7 +16,7 @@ const LoginMethods = () => {
   const handleSignIn = (providerId: string) => {
     setIsLoading(true)
     signIn(providerId)
-    router.replace(`/dashboard/${session?.user.name}`)
+    router.replace(`/inventory/${session?.user.name}`)
   }
 
   return (
