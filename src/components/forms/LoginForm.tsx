@@ -37,7 +37,7 @@ const LoginForm = () => {
       // Fetch the updated session
       const session = await getSession()
 
-      router.replace(`/dashboard/${session?.user.name}`)
+      router.replace(`/inventory/${session?.user.name}`)
     } else {
       // Handle errors
       if (result?.error === "Invalid password") {

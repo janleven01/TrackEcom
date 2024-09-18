@@ -7,7 +7,7 @@ import { redirect } from "next/navigation"
 
 export default async function LoginPage() {
   const session = await getServerSession(authOptions)
-  if (session) redirect(`/dashboard/${session.user.name}`)
+  if (session) redirect(`/inventory/${session.user.name}`)
 
   return (
     <main className="w-full sm:px-10 px-6 h-screen flex items-center justify-center">
