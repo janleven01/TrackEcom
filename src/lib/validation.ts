@@ -50,8 +50,8 @@ export const AddEditProductValidation = z.object({
   stock: z.preprocess(
     (args) => (args === "" ? undefined : args),
     z.coerce
-      .number({ invalid_type_error: "Price must be a number" })
-      .positive("Price must be positive")
+      .number({ invalid_type_error: "Stock must be a number" })
+      .positive("Stock must be positive")
       .nullable()
   ),
 })
