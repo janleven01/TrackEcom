@@ -4,6 +4,9 @@ import { useAuth } from "@/context/AuthContext"
 import AddEditDialog from "./AddEditDialog"
 import { AddEditProductValidation } from "@/lib/validation"
 import { EditProductProps } from "@/types"
+import { useRouter } from "next/navigation"
+import { useToast } from "@/hooks/use-toast"
+import { CheckCircle } from "lucide-react"
 
 const EditProduct = ({
   selectedProduct,
@@ -12,6 +15,8 @@ const EditProduct = ({
   form,
 }: EditProductProps) => {
   const { session } = useAuth()
+  const router = useRouter()
+  const { toast } = useToast()
 
   const onSubmit = async (values: z.infer<typeof AddEditProductValidation>) => {
     try {
@@ -38,9 +43,19 @@ const EditProduct = ({
 
       // Reset form fields
       form.reset()
-
       setIsEditOpen(false)
-      window.location.reload()
+
+      // Show success edit toast
+      toast({
+        description: (
+          <div className="flex gap-2">
+            <CheckCircle size={20} className="text-green-500" />
+            <div>Product edited successfully.</div>
+          </div>
+        ),
+      })
+
+      router.refresh()
     } catch (error) {
       form.setError("status", { message: "Product already exist" })
     }
