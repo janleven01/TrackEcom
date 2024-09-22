@@ -19,7 +19,6 @@ const InventoryRow = (props: InventoryProps) => {
     price,
     stock,
     createdAt,
-    isToggled,
     handleToggle,
     handleDelete,
     handleEditToggle,

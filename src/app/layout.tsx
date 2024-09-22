@@ -5,6 +5,7 @@ import { getServerSession } from "next-auth"
 
 import Provider from "@/components/Provider"
 import { AuthProvider } from "@/context/AuthContext"
+import { Toaster } from "@/components/ui/toaster"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -25,6 +26,7 @@ export default async function RootLayout({
       <body className={inter.className}>
         <Provider session={session}>
           <AuthProvider>{children}</AuthProvider>
+          <Toaster />
         </Provider>
       </body>
     </html>

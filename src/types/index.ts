@@ -20,7 +20,6 @@ export enum FormFieldType {
 
 export type InventoryProps = {
   productName: string
-  isToggled: boolean
   status: "Active" | "Draft" | "Archived"
   price: number
   stock: number

@@ -8,10 +8,15 @@ import { useAuth } from "@/context/AuthContext"
 import { useState } from "react"
 import AddEditDialog from "./AddEditDialog"
 import { AddEditProductValidation } from "@/lib/validation"
+import { useToast } from "@/hooks/use-toast"
+import { useRouter } from "next/navigation"
+import { CheckCircle } from "lucide-react"
 
 const AddProduct = () => {
   const { session } = useAuth()
   const [dialogOpen, setDialogOpen] = useState(false)
+  const { toast } = useToast()
+  const router = useRouter()
   const form = useForm<z.infer<typeof AddEditProductValidation>>({
     resolver: zodResolver(AddEditProductValidation),
     defaultValues: {
@@ -44,7 +49,17 @@ const AddProduct = () => {
       form.reset()
       setDialogOpen(false)
 
-      window.location.reload()
+      // Show add success toast
+      toast({
+        description: (
+          <div className="flex gap-2">
+            <CheckCircle size={20} className="text-green-500" />
+            <div>Product added successfully.</div>
+          </div>
+        ),
+      })
+
+      router.refresh()
     } catch (error) {
       form.setError("status", { message: "Product already exist" })
     }

@@ -18,6 +18,9 @@ import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { AddEditProductValidation } from "@/lib/validation"
 import { z } from "zod"
+import { useRouter } from "next/navigation"
+import { useToast } from "@/hooks/use-toast"
+import { CheckCircle } from "lucide-react"
 
 const ProductDisplay = ({
   inventory,
@@ -37,6 +40,8 @@ const ProductDisplay = ({
   })
 
   const { session } = useAuth()
+  const router = useRouter()
+  const { toast } = useToast()
   const [isEditOpen, setIsEditOpen] = useState(false)
   const [isToggled, setIsToggled] = useState<boolean>(false)
   const [selectedProduct, setSelectedProduct] = useState<string>("")
@@ -90,7 +95,17 @@ const ProductDisplay = ({
           }
         )
 
-        window.location.reload()
+        // Show success toast
+        toast({
+          description: (
+            <div className="flex gap-2">
+              <CheckCircle size={20} className="text-green-500" />
+              <div>Product deleted successfully.</div>
+            </div>
+          ),
+        })
+
+        router.refresh()
       } catch (error) {
         console.log(error)
       }
@@ -130,7 +145,6 @@ const ProductDisplay = ({
                   handleDelete={handleDelete}
                   handleEditToggle={handleEditToggle}
                   handleToggle={handleToggle}
-                  isToggled={isToggled}
                 />
               ))}
             </TableBody>
