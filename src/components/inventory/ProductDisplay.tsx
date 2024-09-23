@@ -43,7 +43,6 @@ const ProductDisplay = ({
   const router = useRouter()
   const { toast } = useToast()
   const [isEditOpen, setIsEditOpen] = useState(false)
-  const [isToggled, setIsToggled] = useState<boolean>(false)
   const [selectedProduct, setSelectedProduct] = useState<string>("")
 
   const handleEditToggle = () => {
@@ -52,7 +51,6 @@ const ProductDisplay = ({
 
   const handleToggle = (productName: string) => {
     setSelectedProduct(productName)
-    setIsToggled((prev) => !prev)
   }
 
   useEffect(() => {
@@ -78,37 +76,31 @@ const ProductDisplay = ({
   }, [selectedProduct, form, session?.user.name])
 
   const handleDelete = async (productName: string) => {
-    const hasConfirmed = confirm(
-      "Are you sure you want to delete this product?"
-    )
+    try {
+      await fetch(
+        `${
+          process.env.NEXT_PUBLIC_VERCEL_URL
+        }/api/inventory/${params}?productName=${encodeURIComponent(
+          productName
+        )}`,
+        {
+          method: "DELETE",
+        }
+      )
 
-    if (hasConfirmed) {
-      try {
-        await fetch(
-          `${
-            process.env.NEXT_PUBLIC_VERCEL_URL
-          }/api/inventory/${params}?productName=${encodeURIComponent(
-            productName
-          )}`,
-          {
-            method: "DELETE",
-          }
-        )
+      // Show success toast
+      toast({
+        description: (
+          <div className="flex gap-2">
+            <CheckCircle size={20} className="text-green-500" />
+            <div>Product deleted successfully.</div>
+          </div>
+        ),
+      })
 
-        // Show success toast
-        toast({
-          description: (
-            <div className="flex gap-2">
-              <CheckCircle size={20} className="text-green-500" />
-              <div>Product deleted successfully.</div>
-            </div>
-          ),
-        })
-
-        router.refresh()
-      } catch (error) {
-        console.log(error)
-      }
+      router.refresh()
+    } catch (error) {
+      console.log(error)
     }
   }
 

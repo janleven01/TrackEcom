@@ -1,3 +1,4 @@
+import { Dispatch, SetStateAction } from "react"
 import { UseFormReturn } from "react-hook-form"
 
 export type ChartDataProps = {
