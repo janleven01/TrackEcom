@@ -22,7 +22,7 @@ import { Button } from "../ui/button"
 import { MoreHorizontal } from "lucide-react"
 import { Badge } from "../ui/badge"
 import { formatDate } from "@/lib/utils"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 const InventoryRow = (props: InventoryProps) => {
   const {
@@ -35,12 +35,18 @@ const InventoryRow = (props: InventoryProps) => {
     handleDelete,
     handleEditToggle,
   } = props
-  const formattedDate = formatDate(createdAt)
+
   const [isDeleteOpen, setIsDeleteOpen] = useState<boolean>(false)
+  const [date, setDate] = useState<string | null>()
 
   const handleDeleteToggle = () => {
     setIsDeleteOpen((prev) => !prev)
   }
+
+  useEffect(() => {
+    const formattedDate = formatDate(createdAt)
+    setDate(formattedDate)
+  }, [createdAt])
 
   return (
     <>
@@ -55,7 +61,7 @@ const InventoryRow = (props: InventoryProps) => {
         </TableCell>
         <TableCell>${price}</TableCell>
         <TableCell className="hidden md:table-cell">{stock}</TableCell>
-        <TableCell className="hidden md:table-cell">{formattedDate}</TableCell>
+        <TableCell className="hidden md:table-cell">{date}</TableCell>
         <TableCell>
           <DropdownMenu onOpenChange={() => handleToggle(productName)}>
             <DropdownMenuTrigger asChild>
