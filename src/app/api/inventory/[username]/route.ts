@@ -43,7 +43,7 @@ export const POST = async (
             status,
             price: productPrice,
             stock,
-            createdAt: formatDate(new Date()),
+            createdAt: new Date(),
           },
         },
       },
