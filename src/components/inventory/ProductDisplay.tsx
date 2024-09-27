@@ -145,7 +145,8 @@ const ProductDisplay = ({
         <CardFooter>
           <div className="flex items-center justify-between w-full text-xs text-muted-foreground">
             <span>
-              Showing <strong>1</strong> of <strong>1</strong> products
+              Showing <strong>{inventory.length}</strong> of{" "}
+              <strong>{inventory.length}</strong> products
             </span>
             <AddProduct />
           </div>
