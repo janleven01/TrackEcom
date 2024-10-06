@@ -59,6 +59,7 @@ const AddEditDialog = ({ form, onSubmit, title }: AddEditDialogProps) => {
               control={form.control}
               name="productName"
               placeholder="Product Name"
+              error={form.formState.errors.productName?.message}
               Icon={<Package size={25} className="ml-2 text-slate-500" />}
             />
             <CustomFormField
@@ -66,6 +67,7 @@ const AddEditDialog = ({ form, onSubmit, title }: AddEditDialogProps) => {
               inputType="number"
               control={form.control}
               name="productPrice"
+              error={form.formState.errors.productPrice?.message}
               placeholder="Price"
               Icon={
                 <DollarSignIcon size={25} className="ml-2 text-slate-500" />
@@ -76,6 +78,7 @@ const AddEditDialog = ({ form, onSubmit, title }: AddEditDialogProps) => {
               inputType="number"
               control={form.control}
               name="stock"
+              error={form.formState.errors.stock?.message}
               placeholder="Stock"
               Icon={<Box size={25} className="ml-2 text-slate-500" />}
             />
@@ -83,6 +86,7 @@ const AddEditDialog = ({ form, onSubmit, title }: AddEditDialogProps) => {
               fieldType={FormFieldType.SELECT}
               control={form.control}
               name="status"
+              error={form.formState.errors.status?.message}
               placeholder="Select a status"
               renderOthers={productStatus.map((status) => (
                 <SelectItem key={status.label} value={status.label}>

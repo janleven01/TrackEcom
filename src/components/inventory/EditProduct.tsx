@@ -48,7 +48,12 @@ const EditProduct = ({
       // Show success edit toast
       toast({
         description: (
-          <div className="flex gap-2">
+          <div
+            role="alert"
+            aria-live="polite"
+            aria-label="Product added successfully."
+            className="flex gap-2"
+          >
             <CheckCircle size={20} className="text-green-500" />
             <div>Product edited successfully.</div>
           </div>
