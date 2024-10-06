@@ -44,10 +44,12 @@ const LoginForm = () => {
         form.setError("password", {
           message: "Invalid password. Please try again.",
         })
+        form.setFocus("password")
       } else {
         form.setError("password", {
           message: result?.error || "Sign-in failed. Please try again.",
         })
+        form.setFocus("password")
       }
     }
   }
@@ -64,6 +66,7 @@ const LoginForm = () => {
             control={form.control}
             name="email"
             placeholder="Email"
+            error={form.formState.errors.email?.message}
             Icon={<Mail size={25} className="ml-2 text-slate-500" />}
           />
           <div className="space-y-1">
@@ -74,10 +77,12 @@ const LoginForm = () => {
               placeholder="Password"
               inputType={inputType}
               autoComplete="off"
+              error={form.formState.errors.password?.message}
               Icon={<Lock size={25} className="ml-2 text-slate-500" />}
               renderOthers={
                 <button
                   type="button"
+                  aria-label="Show Password"
                   onClick={() => setShowPassword((prev) => !prev)}
                 >
                   {showPassword ? (
@@ -88,12 +93,11 @@ const LoginForm = () => {
                 </button>
               }
             />
-            <Link
-              href="/forgot-password"
-              className="flex w-full justify-end text-primary text-xs sm:text-sm"
-            >
-              Forgot Password?
-            </Link>
+            <div className="flex justify-end text-primary">
+              <Link href="/forgot-password" className="text-xs sm:text-sm">
+                Forgot Password?
+              </Link>
+            </div>
           </div>
 
           <Button

@@ -52,7 +52,12 @@ const AddProduct = () => {
       // Show add success toast
       toast({
         description: (
-          <div className="flex gap-2">
+          <div
+            role="alert"
+            aria-live="polite"
+            aria-label="Product added successfully."
+            className="flex gap-2"
+          >
             <CheckCircle size={20} className="text-green-500" />
             <div>Product added successfully.</div>
           </div>

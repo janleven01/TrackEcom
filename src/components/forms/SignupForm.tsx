@@ -52,9 +52,11 @@ const SignupForm = () => {
         router.replace("/login")
       } else {
         form.setError("email", { message: result.message })
+        form.setFocus("email")
       }
     } catch (error) {
       form.setError("email", { message: "Email already taken" })
+      form.setFocus("email")
     }
   }
 
@@ -70,6 +72,7 @@ const SignupForm = () => {
             control={form.control}
             name="name"
             placeholder="Username"
+            error={form.formState.errors.name?.message}
             Icon={<User size={25} className="ml-2 text-slate-500" />}
           />
 
@@ -78,6 +81,7 @@ const SignupForm = () => {
             control={form.control}
             name="email"
             placeholder="Email"
+            error={form.formState.errors.email?.message}
             Icon={<Mail size={25} className="ml-2 text-slate-500" />}
           />
 
@@ -87,11 +91,13 @@ const SignupForm = () => {
             name="password"
             placeholder="Password"
             inputType={inputType}
+            error={form.formState.errors.password?.message}
             Icon={<Lock size={25} className="ml-2 text-slate-500" />}
             autoComplete="off"
             renderOthers={
               <button
                 type="button"
+                aria-label="Show password"
                 onClick={() => setShowPassword((prev) => !prev)}
               >
                 {showPassword ? (

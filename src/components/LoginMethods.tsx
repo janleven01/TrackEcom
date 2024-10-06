@@ -74,6 +74,7 @@ const LoginMethods = () => {
         type="button"
         disabled={true}
         className="flex items-center justify-center gap-2 border w-full p-2 rounded-lg cursor-not-allowed bg-slate-100"
+        aria-disabled={true}
       >
         <Image
           src="/icons/facebook.svg"
