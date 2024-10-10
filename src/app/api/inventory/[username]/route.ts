@@ -29,7 +29,7 @@ export const POST = async (
     if (existingProduct) {
       return NextResponse.json(
         { message: "Product already exists in your inventory" },
-        { status: 404 }
+        { status: 400 }
       )
     }
 

@@ -18,7 +18,7 @@ const InventoryPage = async ({ params }: { params: { username: string } }) => {
       <Nav />
       <section className="sm:px-6 sm:py-6 p-4 border-x border-b rounded-b-lg mb-2">
         <h1 className="text-3xl font-bold">Inventory</h1>
-        <div className="flex border border-dashed rounded-lg h-[75vh] my-4">
+        <div className="flex border border-dashed rounded-lg min-h-[75vh] my-4">
           <Suspense fallback={<InventorySkeleton />}>
             <Inventory params={params.username} />
           </Suspense>
