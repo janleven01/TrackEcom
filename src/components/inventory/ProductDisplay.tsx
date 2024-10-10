@@ -21,6 +21,7 @@ import { z } from "zod"
 import { useRouter } from "next/navigation"
 import { useToast } from "@/hooks/use-toast"
 import { CheckCircle } from "lucide-react"
+import { PaginationUI } from "../Pagination"
 
 const ProductDisplay = ({
   inventory,
@@ -44,6 +45,16 @@ const ProductDisplay = ({
   const { toast } = useToast()
   const [isEditOpen, setIsEditOpen] = useState(false)
   const [selectedProduct, setSelectedProduct] = useState<string>("")
+  const [currentPage, setCurrentPage] = useState(1)
+
+  const productsPerPage = 10
+  const totalPages = Math.ceil(inventory.length / productsPerPage)
+
+  const startIndex = (currentPage - 1) * productsPerPage
+  const currentProducts = inventory.slice(
+    startIndex,
+    startIndex + productsPerPage
+  )
 
   const handleEditToggle = () => {
     setIsEditOpen((prev) => !prev)
@@ -106,7 +117,7 @@ const ProductDisplay = ({
 
   return (
     <>
-      <Card className="flex flex-col justify-between border-none h-full shadow-none">
+      <Card className="flex flex-col justify-between border-none h-full shadow-none ">
         <CardContent>
           <Table>
             <TableHeader>
@@ -126,7 +137,7 @@ const ProductDisplay = ({
               </TableRow>
             </TableHeader>
             <TableBody>
-              {inventory.map((product) => (
+              {currentProducts.map((product) => (
                 <InventoryRow
                   productName={product.productName}
                   status={product.status}
@@ -144,10 +155,15 @@ const ProductDisplay = ({
         </CardContent>
         <CardFooter>
           <div className="flex items-center justify-between w-full text-xs text-muted-foreground">
-            <span>
-              Showing <strong>{inventory.length}</strong> of{" "}
+            <span className="flex-none">
+              Showing <strong>1 to {currentProducts.length}</strong> of{" "}
               <strong>{inventory.length}</strong> products
             </span>
+            <PaginationUI
+              currentPage={currentPage}
+              setCurrentPage={setCurrentPage}
+              totalPages={totalPages}
+            />
             <AddProduct />
           </div>
         </CardFooter>

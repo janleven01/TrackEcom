@@ -45,3 +45,9 @@ export type EditProductProps = {
     undefined
   >
 }
+
+export type PaginationProps = {
+  currentPage: number
+  setCurrentPage: (currentPage: number) => void
+  totalPages: number
+}
