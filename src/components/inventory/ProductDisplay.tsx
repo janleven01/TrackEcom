@@ -47,7 +47,7 @@ const ProductDisplay = ({
   const [selectedProduct, setSelectedProduct] = useState<string>("")
   const [currentPage, setCurrentPage] = useState(1)
 
-  const productsPerPage = 10
+  const productsPerPage = 6
   const totalPages = Math.ceil(inventory.length / productsPerPage)
 
   const startIndex = (currentPage - 1) * productsPerPage
@@ -154,18 +154,21 @@ const ProductDisplay = ({
           </Table>
         </CardContent>
         <CardFooter>
-          <div className="flex items-center justify-between w-full text-xs text-muted-foreground">
-            <span className="flex-none">
+          <div className="flex gap-4 max-sm:flex-col max-lg:flex-wrap items-center justify-between w-full text-xs text-muted-foreground">
+            <span className="sm:flex-none max-sm:order-2">
               Showing <strong>1 to {currentProducts.length}</strong> of{" "}
               <strong>{inventory.length}</strong> products
             </span>
-            <PaginationUI
-              currentPage={currentPage}
-              setCurrentPage={setCurrentPage}
-              totalPages={totalPages}
-            />
+            <div className="max-lg:order-3 max-lg:w-full lg:flex-wrap">
+              <PaginationUI
+                currentPage={currentPage}
+                setCurrentPage={setCurrentPage}
+                totalPages={totalPages}
+              />
+            </div>
             <AddProduct />
           </div>
+          <div></div>
         </CardFooter>
       </Card>
 
