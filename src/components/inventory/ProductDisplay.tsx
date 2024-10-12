@@ -22,6 +22,14 @@ import { useRouter } from "next/navigation"
 import { useToast } from "@/hooks/use-toast"
 import { CheckCircle } from "lucide-react"
 import { PaginationUI } from "../Pagination"
+import useSWR from "swr"
+
+// Fetcher function for SWR
+const fetcher = (url: string) =>
+  fetch(url).then((res) => {
+    if (!res.ok) throw new Error("Network response was not ok")
+    return res.json()
+  })
 
 const ProductDisplay = ({
   inventory,
@@ -45,7 +53,16 @@ const ProductDisplay = ({
   const { toast } = useToast()
   const [isEditOpen, setIsEditOpen] = useState(false)
   const [selectedProduct, setSelectedProduct] = useState<string>("")
+
   const [currentPage, setCurrentPage] = useState(1)
+  const { data: product } = useSWR(
+    selectedProduct
+      ? `/api/inventory/${session?.user.name}/${encodeURIComponent(
+          selectedProduct
+        )}`
+      : null,
+    fetcher
+  )
 
   const productsPerPage = 6
   const totalPages = Math.ceil(inventory.length / productsPerPage)
@@ -65,26 +82,15 @@ const ProductDisplay = ({
   }
 
   useEffect(() => {
-    if (selectedProduct) {
-      // Fetch product data by its ID
-      const fetchProduct = async () => {
-        const res = await fetch(
-          `/api/inventory/${session?.user.name}/${encodeURIComponent(
-            selectedProduct
-          )}`
-        )
-        const product = await res.json()
-        // Used the reset method to populate the form with the fetched data
-        form.reset({
-          productName: product.productName,
-          status: product.status,
-          productPrice: product.price,
-          stock: product.stock,
-        })
-      }
-      fetchProduct()
+    if (product) {
+      form.reset({
+        productName: product.productName,
+        status: product.status,
+        productPrice: product.price,
+        stock: product.stock,
+      })
     }
-  }, [selectedProduct, form, session?.user.name])
+  }, [product, form])
 
   const handleDelete = async (productName: string) => {
     try {
@@ -156,8 +162,11 @@ const ProductDisplay = ({
         <CardFooter>
           <div className="flex gap-4 max-sm:flex-col max-lg:flex-wrap items-center justify-between w-full text-xs text-muted-foreground">
             <span className="sm:flex-none max-sm:order-2">
-              Showing <strong>1 to {currentProducts.length}</strong> of{" "}
-              <strong>{inventory.length}</strong> products
+              Showing{" "}
+              <strong>
+                {startIndex + 1} to {startIndex + currentProducts.length}
+              </strong>{" "}
+              of <strong>{inventory.length}</strong> products
             </span>
             <div className="max-lg:order-3 max-lg:w-full lg:flex-wrap">
               <PaginationUI
