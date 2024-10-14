@@ -1,7 +1,6 @@
 import Inventory from "@/lib/models/inventory"
-import { formatDate } from "@/lib/utils"
 import { AddEditProductValidation } from "@/lib/validation"
-import { connectToDB } from "@/utils/database"
+import { connectToDB } from "@/lib/database"
 import { NextRequest, NextResponse } from "next/server"
 
 export const POST = async (
@@ -62,24 +61,63 @@ export const POST = async (
 }
 
 export const GET = async (
-  req: NextRequest,
-  { params }: { params: { username: string } }
+  req: Request,
+  {
+    params,
+  }: {
+    params: { username: string }
+  }
 ) => {
   try {
+    const { searchParams } = new URL(req.url)
+    const page = parseInt(searchParams.get("page") || "1", 10)
+    const productsPerPage = 6
+    const skip = (page - 1) * productsPerPage
+
     if (!params.username) {
       return NextResponse.json({ message: "Missing username" }, { status: 400 })
     }
 
     await connectToDB()
 
-    const userInventory = await Inventory.findOne({
-      username: params.username,
-    }).select("inventory")
+    const result = await Inventory.aggregate([
+      { $match: { username: params.username } },
+      {
+        $facet: {
+          metadata: [
+            { $project: { count: { $size: "$inventory" } } },
+            { $limit: 1 },
+          ],
+          data: [
+            { $project: { inventory: 1 } },
+            { $unwind: "$inventory" },
+            { $skip: skip },
+            { $limit: productsPerPage },
+            {
+              $group: {
+                _id: null,
+                inventory: { $push: "$inventory" },
+              },
+            },
+          ],
+        },
+      },
+      {
+        $project: {
+          count: { $arrayElemAt: ["$metadata.count", 0] },
+          inventory: { $arrayElemAt: ["$data.inventory", 0] },
+        },
+      },
+    ])
 
-    const inventory = userInventory?.inventory || []
+    const { count, inventory } = result[0]
+    const totalPages = Math.ceil(count / productsPerPage)
 
     return NextResponse.json({
-      inventory,
+      inventory: inventory || [],
+      currentPage: page,
+      totalPages: totalPages,
+      totalItems: count,
     })
   } catch (error) {
     console.error("Error fetching chart data:", error)

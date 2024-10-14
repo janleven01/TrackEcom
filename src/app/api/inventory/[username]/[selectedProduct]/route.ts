@@ -1,6 +1,6 @@
 import Inventory from "@/lib/models/inventory"
 import { AddEditProductValidation } from "@/lib/validation"
-import { connectToDB } from "@/utils/database"
+import { connectToDB } from "@/lib/database"
 import { NextRequest, NextResponse } from "next/server"
 
 export const GET = async (

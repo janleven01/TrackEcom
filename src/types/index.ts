@@ -48,6 +48,13 @@ export type EditProductProps = {
 
 export type PaginationProps = {
   currentPage: number
-  setCurrentPage: (currentPage: number) => void
   totalPages: number
+}
+
+export type ProductDisplayProps = {
+  inventory: InventoryProps[]
+  params: string
+  currentPage: number
+  totalPages: number
+  totalItems: number
 }

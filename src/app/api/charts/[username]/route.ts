@@ -1,4 +1,4 @@
-import { connectToDB } from "@/utils/database"
+import { connectToDB } from "@/lib/database"
 import { NextRequest, NextResponse } from "next/server"
 import ChartData from "@/lib/models/charts"
 

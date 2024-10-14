@@ -1,22 +1,35 @@
 import AddProduct from "./AddProduct"
 import ProductDisplay from "./ProductDisplay"
 
-const Inventory = async ({ params }: { params: string }) => {
+const Inventory = async ({
+  params,
+  page,
+}: {
+  params: string
+  page: string | undefined | string[]
+}) => {
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_VERCEL_URL}/api/inventory/${params}`
+    `${process.env.NEXT_PUBLIC_VERCEL_URL}/api/inventory/${params}?page=${
+      page ? page : 1
+    }`
   )
   if (!res.ok) {
-    const errorMessage = await res.text()
-    console.error("Fetch error:", errorMessage)
-    throw new Error(`Error: ${errorMessage || "Failed to fetch inventory"}`)
+    throw new Error(`HTTP error! status: ${res.status}`)
   }
 
-  const { inventory } = await res.json()
+  const { inventory, currentPage, totalPages, totalItems } = await res.json()
+
   return (
     <>
-      {inventory.length > 0 ? (
+      {totalPages > 0 ? (
         <div className="w-full">
-          <ProductDisplay inventory={inventory} params={params} />
+          <ProductDisplay
+            inventory={inventory}
+            params={params}
+            currentPage={currentPage}
+            totalPages={totalPages}
+            totalItems={totalItems}
+          />
         </div>
       ) : (
         <div className="flex flex-col items-center justify-center m-auto gap-4">
