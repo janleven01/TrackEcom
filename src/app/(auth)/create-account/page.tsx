@@ -1,6 +1,6 @@
 import SignupForm from "@/components/forms/SignupForm"
 import LoginMethods from "@/components/LoginMethods"
-import { authOptions } from "@/utils/authOptions"
+import { authOptions } from "@/lib/authOptions"
 import { getServerSession } from "next-auth"
 import Image from "next/image"
 import { redirect } from "next/navigation"

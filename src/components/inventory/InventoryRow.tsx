@@ -21,7 +21,7 @@ import {
 import { Button } from "../ui/button"
 import { MoreHorizontal } from "lucide-react"
 import { Badge } from "../ui/badge"
-import { formatDate } from "@/lib/utils"
+import { formatDate } from "@/utils/utils"
 import { useEffect, useState } from "react"
 
 const InventoryRow = (props: InventoryProps) => {

@@ -9,9 +9,9 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import AddProduct from "./AddProduct"
-import { InventoryProps } from "@/types"
+import { ProductDisplayProps } from "@/types"
 import InventoryRow from "./InventoryRow"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import EditProduct from "./EditProduct"
 import { useAuth } from "@/context/AuthContext"
 import { useForm } from "react-hook-form"
@@ -31,13 +31,9 @@ const fetcher = (url: string) =>
     return res.json()
   })
 
-const ProductDisplay = ({
-  inventory,
-  params,
-}: {
-  inventory: InventoryProps[]
-  params: string
-}) => {
+const ProductDisplay = (props: ProductDisplayProps) => {
+  const { inventory, currentPage, params, totalPages, totalItems } = props
+
   const form = useForm<z.infer<typeof AddEditProductValidation>>({
     resolver: zodResolver(AddEditProductValidation),
     defaultValues: {
@@ -54,7 +50,8 @@ const ProductDisplay = ({
   const [isEditOpen, setIsEditOpen] = useState(false)
   const [selectedProduct, setSelectedProduct] = useState<string>("")
 
-  const [currentPage, setCurrentPage] = useState(1)
+  const startIndex = (currentPage - 1) * inventory.length
+  console.log((currentPage - 1) * inventory.length)
   const { data: product } = useSWR(
     selectedProduct
       ? `/api/inventory/${session?.user.name}/${encodeURIComponent(
@@ -64,24 +61,12 @@ const ProductDisplay = ({
     fetcher
   )
 
-  const productsPerPage = 6
-  const totalPages = Math.ceil(inventory.length / productsPerPage)
-
-  const startIndex = (currentPage - 1) * productsPerPage
-  const currentProducts = inventory.slice(
-    startIndex,
-    startIndex + productsPerPage
-  )
-
   const handleEditToggle = () => {
     setIsEditOpen((prev) => !prev)
   }
 
   const handleToggle = (productName: string) => {
     setSelectedProduct(productName)
-  }
-
-  useEffect(() => {
     if (product) {
       form.reset({
         productName: product.productName,
@@ -90,7 +75,7 @@ const ProductDisplay = ({
         stock: product.stock,
       })
     }
-  }, [product, form])
+  }
 
   const handleDelete = async (productName: string) => {
     try {
@@ -131,9 +116,7 @@ const ProductDisplay = ({
                 <TableHead>Product Name</TableHead>
                 <TableHead>Status</TableHead>
                 <TableHead>Price</TableHead>
-                <TableHead className="hidden md:table-cell">
-                  Total Sales
-                </TableHead>
+                <TableHead className="hidden md:table-cell">Stocks</TableHead>
                 <TableHead className="hidden md:table-cell">
                   Created at
                 </TableHead>
@@ -143,7 +126,7 @@ const ProductDisplay = ({
               </TableRow>
             </TableHeader>
             <TableBody>
-              {currentProducts.map((product) => (
+              {inventory.map((product) => (
                 <InventoryRow
                   productName={product.productName}
                   status={product.status}
@@ -164,16 +147,12 @@ const ProductDisplay = ({
             <span className="sm:flex-none max-sm:order-2">
               Showing{" "}
               <strong>
-                {startIndex + 1} to {startIndex + currentProducts.length}
+                {startIndex + 1} to {startIndex + inventory.length}
               </strong>{" "}
-              of <strong>{inventory.length}</strong> products
+              of <strong>{totalItems}</strong> products
             </span>
             <div className="max-lg:order-3 max-lg:w-full lg:flex-wrap">
-              <PaginationUI
-                currentPage={currentPage}
-                setCurrentPage={setCurrentPage}
-                totalPages={totalPages}
-              />
+              <PaginationUI currentPage={currentPage} totalPages={totalPages} />
             </div>
             <AddProduct />
           </div>

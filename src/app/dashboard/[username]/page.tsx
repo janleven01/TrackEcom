@@ -1,7 +1,7 @@
 import FetchCharts from "@/components/FetchCharts"
 import Nav from "@/components/Nav"
 import DashboardSkeleton from "@/components/skeleton/dashboard-charts"
-import { authOptions } from "@/utils/authOptions"
+import { authOptions } from "@/lib/authOptions"
 import { getServerSession } from "next-auth"
 import { redirect } from "next/navigation"
 import { Suspense } from "react"
