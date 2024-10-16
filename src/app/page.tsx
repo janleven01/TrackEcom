@@ -7,9 +7,7 @@ export default async function Home() {
 
   if (!session) {
     redirect("/login")
-    return null
   }
 
   redirect(`/dashboard/${session.user.name}`)
-  return null
 }

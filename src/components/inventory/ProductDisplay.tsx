@@ -147,13 +147,18 @@ const ProductDisplay = (props: ProductDisplayProps) => {
             <span className="sm:flex-none max-sm:order-2">
               Showing{" "}
               <strong>
-                {startIndex + 1} to {startIndex + inventory.length}
+                {startIndex + 1} - {startIndex + inventory.length}
               </strong>{" "}
               of <strong>{totalItems}</strong> products
             </span>
-            <div className="max-lg:order-3 max-lg:w-full lg:flex-wrap">
-              <PaginationUI currentPage={currentPage} totalPages={totalPages} />
-            </div>
+            {totalPages > 1 && (
+              <div className="max-lg:order-3 max-lg:w-full lg:flex-wrap">
+                <PaginationUI
+                  currentPage={currentPage}
+                  totalPages={totalPages}
+                />
+              </div>
+            )}
             <AddProduct />
           </div>
           <div></div>
