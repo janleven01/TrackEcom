@@ -97,7 +97,7 @@ const SignupForm = () => {
             renderOthers={
               <button
                 type="button"
-                aria-label="Show password"
+                aria-label="Show Password"
                 onClick={() => setShowPassword((prev) => !prev)}
               >
                 {showPassword ? (
