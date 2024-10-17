@@ -51,7 +51,6 @@ const ProductDisplay = (props: ProductDisplayProps) => {
   const [selectedProduct, setSelectedProduct] = useState<string>("")
 
   const startIndex = (currentPage - 1) * inventory.length
-  console.log((currentPage - 1) * inventory.length)
   const { data: product } = useSWR(
     selectedProduct
       ? `/api/inventory/${session?.user.name}/${encodeURIComponent(

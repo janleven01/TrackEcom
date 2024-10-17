@@ -14,7 +14,7 @@ import { Button } from "../ui/button"
 import { Box, DollarSignIcon, LoaderCircle, Package } from "lucide-react"
 import { FormFieldType } from "@/types"
 import { productStatus } from "@/constants"
-import { SelectItem } from "../ui/select"
+import { SelectItem, SelectLabel } from "../ui/select"
 import { AddEditProductValidation } from "@/lib/validation"
 
 type AddEditDialogProps = {
@@ -90,7 +90,7 @@ const AddEditDialog = ({ form, onSubmit, title }: AddEditDialogProps) => {
               placeholder="Select a status"
               renderOthers={productStatus.map((status) => (
                 <SelectItem key={status.label} value={status.label}>
-                  <h4>{status.label}</h4>
+                  {status.label}
                 </SelectItem>
               ))}
             />
