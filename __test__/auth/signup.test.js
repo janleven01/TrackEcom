@@ -124,27 +124,4 @@ describe("SignupForm", () => {
       expect(errorMessages.length).toBeGreaterThan(0)
     })
   })
-
-  // it("handles network error", async () => {
-  //   global.fetch.mockRejectedValueOnce(new Error("Network error"))
-
-  //   render(<SignupForm />)
-
-  //   fireEvent.change(screen.getByPlaceholderText("Username"), {
-  //     target: { value: "testuser" },
-  //   })
-  //   fireEvent.change(screen.getByPlaceholderText("Email"), {
-  //     target: { value: "test@example.com" },
-  //   })
-  //   fireEvent.change(screen.getByPlaceholderText("Password"), {
-  //     target: { value: "password123" },
-  //   })
-  //   fireEvent.click(screen.getByText("I agree with Terms and Condition"))
-
-  //   fireEvent.click(screen.getByRole("button", { name: /Create Account/i }))
-
-  //   await waitFor(() => {
-  //     expect(screen.getByText("Email already taken")).toBeInTheDocument()
-  //   })
-  // })
 })
