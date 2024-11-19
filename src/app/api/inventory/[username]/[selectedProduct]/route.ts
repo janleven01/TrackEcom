@@ -82,7 +82,7 @@ export const PATCH = async (
           "inventory.$.status": status,
           "inventory.$.price": productPrice,
           "inventory.$.stock": stock,
-          "inventory.$.updatedAt": new Date(), // Track update timestamp
+          "inventory.$.updatedAt": new Date(),
         },
       },
       { new: true } // Return the updated document

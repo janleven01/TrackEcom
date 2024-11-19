@@ -31,9 +31,11 @@ const InventoryRow = (props: InventoryProps) => {
     price,
     stock,
     createdAt,
+    activeCheckboxes,
     handleToggle,
     handleDelete,
     handleEditToggle,
+    handleCheckbox,
   } = props
 
   const [isDeleteOpen, setIsDeleteOpen] = useState<boolean>(false)
@@ -43,6 +45,7 @@ const InventoryRow = (props: InventoryProps) => {
     setIsDeleteOpen((prev) => !prev)
   }
 
+  //prevent hydration error
   useEffect(() => {
     const formattedDate = formatDate(createdAt)
     setDate(formattedDate)
@@ -50,7 +53,16 @@ const InventoryRow = (props: InventoryProps) => {
 
   return (
     <>
-      <TableRow>
+      <TableRow
+        className={`${activeCheckboxes.includes(productName) && "bg-muted"}`}
+      >
+        <TableCell>
+          <input
+            type="checkbox"
+            checked={activeCheckboxes.includes(productName)}
+            onChange={() => handleCheckbox(productName)}
+          />
+        </TableCell>
         <TableCell className="font-medium">{productName}</TableCell>
         <TableCell>
           {status === "Active" ? (

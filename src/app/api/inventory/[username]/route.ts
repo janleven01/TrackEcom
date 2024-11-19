@@ -143,30 +143,32 @@ export const DELETE = async (
 
     await connectToDB()
 
-    const { searchParams } = new URL(req.url)
-    const productName = searchParams.get("productName") // Get the product name from query params
+    // Parse the JSON body to get the product names
+    const productNames = await req.json()
 
-    if (!productName) {
+    if (!productNames || productNames.length === 0) {
       return NextResponse.json(
-        { message: "Missing product name" },
+        { message: "Missing product names" },
         { status: 400 }
       )
     }
 
     const result = await Inventory.findOneAndUpdate(
       { username: params.username },
-      { $pull: { inventory: { productName } } },
-      { new: true }
+      {
+        $pull: { inventory: { productName: { $in: productNames } } },
+      },
+      { new: true } // Return the updated document
     )
 
     if (!result) {
       return NextResponse.json(
-        { message: "Product not found" },
+        { message: "No products found to delete" },
         { status: 404 }
       )
     }
 
-    return NextResponse.json({ message: "Product deleted successfully" })
+    return NextResponse.json({ message: "Products deleted successfully" })
   } catch (error) {
     console.error("Error deleting product:", error)
     return NextResponse.json(
