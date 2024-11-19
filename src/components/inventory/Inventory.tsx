@@ -1,5 +1,6 @@
+import { redirect } from "next/navigation"
 import AddProduct from "./AddProduct"
-import ProductDisplay from "./ProductDisplay"
+import ProductDisplay from "./InventoryHeader"
 
 const Inventory = async ({
   params,
@@ -18,6 +19,14 @@ const Inventory = async ({
   }
 
   const { inventory, currentPage, totalPages, totalItems } = await res.json()
+
+  if (inventory.length === 0 && currentPage > 1) {
+    redirect(
+      `${process.env.NEXT_PUBLIC_VERCEL_URL}/inventory/${params}?page=${
+        currentPage - 1
+      }`
+    )
+  }
 
   return (
     <>

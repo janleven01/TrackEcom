@@ -25,9 +25,11 @@ export type InventoryProps = {
   price: number
   stock: number
   createdAt: string
+  activeCheckboxes: string[]
   handleEditToggle: () => void
   handleToggle: (productName: string) => void
   handleDelete: (productName: string) => void
+  handleCheckbox: (productName: string) => void
 }
 
 export type EditProductProps = {
@@ -49,6 +51,7 @@ export type EditProductProps = {
 export type PaginationProps = {
   currentPage: number
   totalPages: number
+  setSelectAll: (value: boolean) => void
 }
 
 export type ProductDisplayProps = {

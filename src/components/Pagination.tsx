@@ -11,7 +11,7 @@ import { PaginationProps } from "@/types"
 import { usePathname, useRouter } from "next/navigation"
 
 export function PaginationUI(props: PaginationProps) {
-  const { currentPage, totalPages } = props
+  const { currentPage, totalPages, setSelectAll } = props
   const router = useRouter()
   const path = usePathname()
 
@@ -19,16 +19,19 @@ export function PaginationUI(props: PaginationProps) {
     if (currentPage < totalPages) {
       router.push(`${path}?page=${currentPage + 1}`)
     }
+    setSelectAll(false)
   }
 
   const handlePrevious = () => {
     if (currentPage > 1) {
       router.push(`${path}?page=${currentPage - 1}`)
     }
+    setSelectAll(false)
   }
 
   const handleClickedNumber = (num: number) => {
     router.push(`${path}?page=${num}`)
+    setSelectAll(false)
   }
 
   const renderPageNumbers = () => {
